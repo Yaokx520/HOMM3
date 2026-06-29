@@ -1,14 +1,19 @@
 (() => {
-  const QUESTION_COUNT = 12;
+  const BASE_QUESTION_COUNT = 12;
+  const MAX_QUESTION_COUNT = 20;
   const data = window.QUIZ_DATA;
   const heroById = Object.fromEntries(data.heroes.map((hero) => [hero.id, hero]));
   const heroIds = data.heroes.map((hero) => hero.id);
+  const followUpQuestionById = Object.fromEntries(
+    (data.followUpQuestions || []).map((question) => [question.id, question])
+  );
 
   const state = {
     selectedQuestions: [],
     currentIndex: 0,
     answers: [],
     audioPlaying: false,
+    injectedFollowUps: new Set(),
   };
 
   const startButton = document.getElementById("startButton");
@@ -42,6 +47,73 @@
   const shareHint = document.getElementById("shareHint");
 
   const SITE_URL = "https://yaokx520.github.io/HOMM3/";
+  const quoteLibrary = {
+    general: [
+      "叉出去。",
+      "接着奏乐，接着舞。",
+      "来人，换大盏。",
+      "我从未见过有如此厚颜无耻之人。",
+      "大丈夫生于天地间，岂能郁郁久居人下。",
+      "俺也一样。",
+      "良机稍纵即逝，不可怠慢。",
+    ],
+    byMusic: {
+      storm: [
+        "{name}这路数，接着奏乐接着舞，舞着舞着就一道雷劈下来了。",
+        "来人，给{name}换大盏，今天这电表肯定要转飞。",
+      ],
+      ember: [
+        "叉出去，别让{name}再点火了，再点地图都熟了。",
+        "{name}这火力还真不是节目效果，是奔着把桌子烤化去的。",
+      ],
+      shadow: [
+        "{name}这人还是个忠厚人呀，只不过忠厚得有点阴间。",
+        "来人，换大盏，今晚得听{name}讲一宿黑暗兵法。",
+      ],
+      war: [
+        "我二弟天下无敌，而{name}负责把这个无敌落到实处。",
+        "叉出去，谁把{name}放正面了，这不是欺负人吗。",
+      ],
+      bastion: [
+        "{name}这xx还是个忠厚人呀，忠厚到你打半天都不掉血。",
+        "接着奏乐接着舞，反正对面迟早会被{name}磨到不会跳。",
+      ],
+      tide: [
+        "{name}就是个 wanna free，嘴上吹海风，手上全是脏活。",
+        "来人，换大盏，今晚这潮汐局得配点大杯的才压得住。",
+      ],
+      spark: [
+        "{name}这人最会一边数钱一边放法，真是接着奏乐接着舞。",
+        "叉出去，别让{name}再算账了，再算连路边箱子都要入表。",
+      ],
+    },
+    byHero: {
+      H045: [
+        "索姆拉一出手，那真是接着奏乐接着舞，舞台和对面一起没了。",
+        "来人，换大盏，今天给索姆拉上个能导电的杯。",
+      ],
+      H049: [
+        "瑞斯卡不是火爹附体，瑞斯卡就是火爹本人。",
+        "叉出去，别让瑞斯卡再摸火球了，城墙要保不住了。",
+      ],
+      H102: [
+        "我二弟天下无敌，肯洛·哈格看完都得点头说这话没毛病。",
+        "谁说肯洛·哈格只会硬冲？这叫把道理用拳头讲清楚。",
+      ],
+      H023: [
+        "凯琳就是个 wanna free，主打一个人还没看清她就跑出地图边了。",
+      ],
+      H126: [
+        "安洁儿这人还是个忠厚人呀，就是忠厚里掺了点海盐和毒。",
+      ],
+      H127: [
+        "蒂娃不窝囊，蒂娃只是等风，风一到她就来收人。",
+      ],
+      H032: [
+        "我乃塔楼上将军，匹克杰姆是也。",
+      ],
+    },
+  };
 
   function shuffle(list) {
     const copy = [...list];
@@ -77,9 +149,10 @@
 
   function buildQuiz() {
     clearSharedResultUrl();
-    state.selectedQuestions = shuffle(fullQuestionSet).slice(0, QUESTION_COUNT);
+    state.selectedQuestions = shuffle(fullQuestionSet).slice(0, BASE_QUESTION_COUNT);
     state.currentIndex = 0;
     state.answers = [];
+    state.injectedFollowUps = new Set();
     pauseAudio();
     introPanel.classList.add("hidden");
     resultPanel.classList.add("hidden");
@@ -89,8 +162,8 @@
 
   function renderQuestion() {
     const question = state.selectedQuestions[state.currentIndex];
-    const progress = ((state.currentIndex + 1) / QUESTION_COUNT) * 100;
-    questionTag.textContent = `第 ${state.currentIndex + 1} 题 / 共 ${QUESTION_COUNT} 题`;
+    const progress = ((state.currentIndex + 1) / MAX_QUESTION_COUNT) * 100;
+    questionTag.textContent = `第 ${state.currentIndex + 1} 题 / 当前已展开 ${state.selectedQuestions.length} 题`;
     questionCategory.textContent = question.category;
     questionTitle.textContent = question.title;
     progressFill.style.width = `${progress}%`;
@@ -107,12 +180,24 @@
 
   function handleAnswer(option) {
     state.answers.push(option);
+    appendFollowUpQuestions(option.followUps || []);
     state.currentIndex += 1;
-    if (state.currentIndex >= QUESTION_COUNT) {
+    if (state.currentIndex >= state.selectedQuestions.length) {
       showResult();
       return;
     }
     renderQuestion();
+  }
+
+  function appendFollowUpQuestions(followUpIds) {
+    for (const followUpId of followUpIds) {
+      if (state.selectedQuestions.length >= MAX_QUESTION_COUNT) break;
+      if (state.injectedFollowUps.has(followUpId)) continue;
+      const followUp = followUpQuestionById[followUpId];
+      if (!followUp) continue;
+      state.injectedFollowUps.add(followUpId);
+      state.selectedQuestions.push(followUp);
+    }
   }
 
   function computeResult() {
@@ -157,6 +242,20 @@
     return "结果人格：资源起飞型";
   }
 
+  function uniqueQuotes(quotes) {
+    return [...new Set(quotes.filter(Boolean))];
+  }
+
+  function pickQuote(hero) {
+    const heroQuotes = quoteLibrary.byHero[hero.id] || [];
+    const musicQuotes = quoteLibrary.byMusic[hero.music] || [];
+    const merged = uniqueQuotes([...heroQuotes, ...musicQuotes, hero.quote, ...quoteLibrary.general]);
+    const seedSource = `${hero.id}-${hero.name}-${state.answers.map((answer) => answer.label).join("|")}`;
+    const seed = [...seedSource].reduce((sum, char) => sum + char.charCodeAt(0), 0);
+    const rawQuote = merged[seed % merged.length];
+    return rawQuote.replaceAll("{name}", hero.name).replace("xx", hero.name);
+  }
+
   async function tryPlayAudio() {
     try {
       await audio.play();
@@ -189,7 +288,7 @@
     heroFriendView.textContent = hero.friendView;
     heroMeltdown.textContent = hero.meltdown;
     musicLabel.textContent = music.name;
-    heroQuote.textContent = `总结金句：${hero.quote}`;
+    heroQuote.textContent = `总结金句：${pickQuote(hero)}`;
     shareTitle.textContent = `分享你的 ${hero.name} 结果`;
     shareHint.textContent = "链接会直达当前英雄结果页，朋友点开就能看到同款判词。";
     heroTags.innerHTML = hero.tags.map((tag) => `<span>${tag}</span>`).join("");

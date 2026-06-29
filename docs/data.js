@@ -444,10 +444,10 @@ window.QUIZ_DATA = (() => {
       category: "开局精神状态",
       title: "新图开局只给你一座破城、几只兵和一堆雾，你最像哪种人？",
       options: [
-        { label: "先探路", detail: "能不能赢以后再说，视野必须先开。", axes: { rush: 2, control: 1 } },
-        { label: "先盘收益", detail: "木头矿、水银和钱袋子，一个都得算明白。", axes: { econ: 2, control: 1 } },
-        { label: "先找爆点", detail: "只要有机会一波开张，今天就不是窝囊废。", axes: { rush: 1, chaos: 2 } },
-        { label: "先保底", detail: "先把该补的防线补齐，别让低级失误偷家。", axes: { honor: 2, control: 1 } },
+        { label: "先探路", detail: "能不能赢以后再说，视野必须先开。", axes: { rush: 2, control: 1 }, followUps: ["f1", "f2"] },
+        { label: "先盘收益", detail: "木头矿、水银和钱袋子，一个都得算明白。", axes: { econ: 2, control: 1 }, followUps: ["f3", "f4"] },
+        { label: "先找爆点", detail: "只要有机会一波开张，今天就不是窝囊废。", axes: { rush: 1, chaos: 2 }, followUps: ["f5", "f6", "f7"] },
+        { label: "先保底", detail: "先把该补的防线补齐，别让低级失误偷家。", axes: { honor: 2, control: 1 }, followUps: ["f8", "f9"] },
       ],
     },
     {
@@ -504,10 +504,10 @@ window.QUIZ_DATA = (() => {
       category: "梗浓度",
       title: "听到“窝囊废”三个字时，你的内心弹幕最像哪句？",
       options: [
-        { label: "不可能是我", detail: "我宁可亏，也不能怂成那样。", axes: { honor: 2, chaos: 1 } },
-        { label: "先别急", detail: "窝囊不窝囊，要看这波收益。", axes: { econ: 2, control: 1 } },
-        { label: "看情况演", detail: "该怂时怂，该狠狠干时狠狠干。", axes: { control: 2, rush: 1 } },
-        { label: "拿来造梗", detail: "输赢其次，这词先记进今日语录。", axes: { weird: 2, chaos: 1 } },
+        { label: "不可能是我", detail: "我宁可亏，也不能怂成那样。", axes: { honor: 2, chaos: 1 }, followUps: ["f10", "f11"] },
+        { label: "先别急", detail: "窝囊不窝囊，要看这波收益。", axes: { econ: 2, control: 1 }, followUps: ["f12", "f13"] },
+        { label: "看情况演", detail: "该怂时怂，该狠狠干时狠狠干。", axes: { control: 2, rush: 1 }, followUps: ["f14", "f15"] },
+        { label: "拿来造梗", detail: "输赢其次，这词先记进今日语录。", axes: { weird: 2, chaos: 1 }, followUps: ["f16", "f17", "f18"] },
       ],
     },
     {
@@ -822,5 +822,206 @@ window.QUIZ_DATA = (() => {
     },
   ];
 
-  return { heroes, questions, musicThemes };
+  const followUpQuestions = [
+    {
+      id: "f1",
+      category: "追问：飞线本能",
+      title: "你探路时最想优先确认哪件事？",
+      options: [
+        { label: "有没有捷径", detail: "地图不可能只有设计稿那一条路。", axes: { rush: 2, weird: 1 } },
+        { label: "有没有人偷矿", detail: "视野就是安全感。", axes: { control: 2, honor: 1 } },
+        { label: "有没有宝屋", detail: "探路也得讲收益。", axes: { econ: 2, rush: 1 } },
+        { label: "有没有节目效果", detail: "最好顺手还能把朋友吓一跳。", axes: { chaos: 1, weird: 2 } },
+      ],
+    },
+    {
+      id: "f2",
+      category: "追问：跑路哲学",
+      title: "如果全图跑图只能选一项加成，你更想拿哪种？",
+      options: [
+        { label: "稳定脚程", detail: "别整虚的，步子大才是王道。", axes: { rush: 3 } },
+        { label: "额外视野", detail: "先看到，才配决定。", axes: { control: 2, rush: 1 } },
+        { label: "接力链子", detail: "效率来自整体，不只来自个人。", axes: { econ: 2, control: 1 } },
+        { label: "赌一条暗门", detail: "正路太普通了。", axes: { weird: 2, chaos: 1 } },
+      ],
+    },
+    {
+      id: "f3",
+      category: "追问：抠门艺术",
+      title: "你最难容忍哪一种资源浪费？",
+      options: [
+        { label: "多走一步路", detail: "这是对后勤学的侮辱。", axes: { rush: 1, econ: 2 } },
+        { label: "多花一口兵", detail: "白换就是白亏。", axes: { econ: 2, control: 1 } },
+        { label: "多交一轮税", detail: "明明可以先拿矿。", axes: { econ: 3 } },
+        { label: "多讲一句废话", detail: "时间也是资源。", axes: { rush: 1, control: 2 } },
+      ],
+    },
+    {
+      id: "f4",
+      category: "追问：财阀审美",
+      title: "你最喜欢哪种“富起来”的方式？",
+      options: [
+        { label: "稳定滚雪球", detail: "慢一点，但真安心。", axes: { econ: 3 } },
+        { label: "抢大节奏点", detail: "一下赚大的，呼吸都顺。", axes: { econ: 2, chaos: 1 } },
+        { label: "边跑边拿", detail: "收益和速度得一起飞。", axes: { econ: 1, rush: 2 } },
+        { label: "让别人穷", detail: "你少了，也算我多了。", axes: { control: 2, weird: 1 } },
+      ],
+    },
+    {
+      id: "f5",
+      category: "追问：上头判定",
+      title: "你准备狠狠干一波之前，最想先确认什么？",
+      options: [
+        { label: "对面会不会懵", detail: "只要懵一秒，就够我下手。", axes: { chaos: 2, rush: 1 } },
+        { label: "我能不能赢帅", detail: "高光和结果最好一起到。", axes: { chaos: 1, weird: 2 } },
+        { label: "值不值得赌", detail: "再上头也得有赔率。", axes: { econ: 2, control: 1 } },
+        { label: "死不死得体面", detail: "可以输，但不能窝囊。", axes: { honor: 2, chaos: 1 } },
+      ],
+    },
+    {
+      id: "f6",
+      category: "追问：火力分布",
+      title: "如果你是火爹流选手，最想在哪种场面出手？",
+      options: [
+        { label: "对面站满一团", detail: "不炸都对不起队形。", axes: { chaos: 3 } },
+        { label: "对面自以为稳", detail: "这种最适合一键改命。", axes: { chaos: 2, weird: 1 } },
+        { label: "朋友都在围观", detail: "那必须给点节目效果。", axes: { weird: 2, chaos: 1 } },
+        { label: "只差临门一脚", detail: "漂亮收尾也算修养。", axes: { honor: 2, rush: 1 } },
+      ],
+    },
+    {
+      id: "f7",
+      category: "追问：莽夫边界",
+      title: "什么情况下你会暂时收手，不再硬冲？",
+      options: [
+        { label: "朋友说先别送", detail: "行，这次给兄弟一个面子。", axes: { honor: 2, control: 1 } },
+        { label: "真算不过账", detail: "冲归冲，破产不行。", axes: { econ: 2, chaos: 1 } },
+        { label: "戏不够大", detail: "不够炸裂我不想演。", axes: { weird: 2, chaos: 1 } },
+        { label: "感觉有埋伏", detail: "莽也得莽在对的时候。", axes: { control: 2, rush: 1 } },
+      ],
+    },
+    {
+      id: "f8",
+      category: "追问：兜底人格",
+      title: "当别人开始乱送时，你最像哪种反应？",
+      options: [
+        { label: "立刻补洞", detail: "先救局，再骂人。", axes: { control: 2, honor: 1 } },
+        { label: "记在小本上", detail: "这账以后要算。", axes: { control: 1, weird: 2 } },
+        { label: "默默接锅", detail: "先活下来再说。", axes: { honor: 3 } },
+        { label: "当场教育", detail: "今天谁都别想跑。", axes: { chaos: 1, honor: 2 } },
+      ],
+    },
+    {
+      id: "f9",
+      category: "追问：城墙信仰",
+      title: "你最欣赏哪一种防守胜利？",
+      options: [
+        { label: "一丝不漏", detail: "对面根本没有窗口。", axes: { control: 3 } },
+        { label: "硬扛到底", detail: "你打任你打，我不掉层皮。", axes: { honor: 3 } },
+        { label: "拖到他急", detail: "人一急就会送。", axes: { control: 2, weird: 1 } },
+        { label: "最后反咬", detail: "守不是目的，杀回来才是。", axes: { honor: 2, chaos: 1 } },
+      ],
+    },
+    {
+      id: "f10",
+      category: "追问：不当窝囊废",
+      title: "你认定自己不是窝囊废的主要证据是什么？",
+      options: [
+        { label: "关键时刻敢按", detail: "该冲的时候我真上。", axes: { honor: 2, chaos: 1 } },
+        { label: "就算输也不怂", detail: "体面是底线。", axes: { honor: 3 } },
+        { label: "不让别人白秀", detail: "你玩花的，我就跟你碰。", axes: { chaos: 2, honor: 1 } },
+        { label: "该狠时真狠", detail: "别拿平时状态衡量我。", axes: { rush: 1, chaos: 2 } },
+      ],
+    },
+    {
+      id: "f11",
+      category: "追问：硬话来源",
+      title: "你最容易在哪种语境下说出狠话？",
+      options: [
+        { label: "被人嘲讽时", detail: "嘴可以输，气势不能。", axes: { honor: 2, chaos: 1 } },
+        { label: "要拼命时", detail: "这时候就别装温柔了。", axes: { rush: 2, honor: 1 } },
+        { label: "准备翻盘时", detail: "先把气场立住。", axes: { chaos: 1, weird: 2 } },
+        { label: "朋友怂了时", detail: "得有人把胆子抬回来。", axes: { honor: 2, control: 1 } },
+      ],
+    },
+    {
+      id: "f12",
+      category: "追问：收益主义",
+      title: "如果忍一手能换更大利益，你会怎么说服自己？",
+      options: [
+        { label: "这是投资", detail: "现在不爽，后面起飞。", axes: { econ: 3 } },
+        { label: "这是控节奏", detail: "不急，轮到我时再说。", axes: { control: 2, econ: 1 } },
+        { label: "这是兵法", detail: "退一步是为了后面让他退十步。", axes: { weird: 2, control: 1 } },
+        { label: "这是体面", detail: "瞎冲才真掉价。", axes: { honor: 2, econ: 1 } },
+      ],
+    },
+    {
+      id: "f13",
+      category: "追问：算盘声",
+      title: "你听见哪种声音最像胜利前奏？",
+      options: [
+        { label: "金库进账", detail: "钱声最安神。", axes: { econ: 3 } },
+        { label: "脚步接力", detail: "队伍流转顺起来最爽。", axes: { rush: 1, econ: 2 } },
+        { label: "对面慌了", detail: "收益开始显现了。", axes: { control: 2, weird: 1 } },
+        { label: "朋友夸你会算", detail: "终于有人懂我的辛苦。", axes: { econ: 2, honor: 1 } },
+      ],
+    },
+    {
+      id: "f14",
+      category: "追问：能屈能伸",
+      title: "你眼里的“暂时认怂”更像什么？",
+      options: [
+        { label: "换档", detail: "不是退，是换一种赢法。", axes: { control: 2, rush: 1 } },
+        { label: "伏笔", detail: "前面低一点，后面才有反差。", axes: { weird: 2, control: 1 } },
+        { label: "省损", detail: "白亏才叫真怂。", axes: { econ: 3 } },
+        { label: "让他得意一会", detail: "待会儿收的时候更香。", axes: { chaos: 1, control: 2 } },
+      ],
+    },
+    {
+      id: "f15",
+      category: "追问：演员修养",
+      title: "如果你要演一手，最想演给谁看？",
+      options: [
+        { label: "演给对面", detail: "骗到一步就是赚。", axes: { control: 2, weird: 1 } },
+        { label: "演给队友", detail: "先稳住军心。", axes: { honor: 2, control: 1 } },
+        { label: "演给观众", detail: "都来了，不得整点层次。", axes: { weird: 2, chaos: 1 } },
+        { label: "演给自己", detail: "我喜欢这种掌控感。", axes: { control: 2, weird: 1 } },
+      ],
+    },
+    {
+      id: "f16",
+      category: "追问：造梗技术",
+      title: "你最喜欢哪种梗的诞生方式？",
+      options: [
+        { label: "自己打出来", detail: "名场面得靠战绩撑着。", axes: { chaos: 1, honor: 2 } },
+        { label: "别人送上门", detail: "对面一抽象，我就来精神。", axes: { weird: 2, control: 1 } },
+        { label: "边输边造", detail: "输了也不能白输。", axes: { weird: 2, chaos: 1 } },
+        { label: "朋友一起抬", detail: "好梗要有共鸣才飞。", axes: { honor: 1, weird: 2 } },
+      ],
+    },
+    {
+      id: "f17",
+      category: "追问：群聊存在感",
+      title: "你最像哪种群聊选手？",
+      options: [
+        { label: "冷不丁一句封神", detail: "平时潜水，出手封喉。", axes: { weird: 2, control: 1 } },
+        { label: "边看边接梗", detail: "气氛得有人续上。", axes: { honor: 1, weird: 2 } },
+        { label: "败局也能讲成评书", detail: "嘴不能输。", axes: { chaos: 1, weird: 2 } },
+        { label: "偶尔认真复盘", detail: "闹完还得落回技术。", axes: { control: 2, econ: 1 } },
+      ],
+    },
+    {
+      id: "f18",
+      category: "追问：抽象终点",
+      title: "你觉得抽象和实力的最好关系是什么？",
+      options: [
+        { label: "有实力才配抽象", detail: "不然就是白闹。", axes: { honor: 2, control: 1 } },
+        { label: "抽象本身也是实力", detail: "能把气氛带飞就是本事。", axes: { weird: 3 } },
+        { label: "最好两手都硬", detail: "赢也要赢得有梗。", axes: { chaos: 1, weird: 1, honor: 1 } },
+        { label: "看场合切换", detail: "该正经时我也很正经。", axes: { control: 2, weird: 1 } },
+      ],
+    },
+  ];
+
+  return { heroes, questions, followUpQuestions, musicThemes };
 })();
