@@ -14,6 +14,7 @@ HERO_SOURCES = {
     "H018": "hpl018rn.pcx",
     "H023": "hpl023rn.pcx",
     "H027": "hpl027dr.pcx",
+    "H032": "hpl032al.pcx",
     "H035": "hpl035al.pcx",
     "H045": "hpl045wz.pcx",
     "H047": "hpl047wz.pcx",
