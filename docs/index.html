@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>你是哪位英雄无敌3梗王英雄</title>
+    <meta
+      name="description"
+      content="一个充满英三梗、深渊号角气味和新三国金句的趣味人格测试。"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero-banner">
+        <div class="hero-copy">
+          <p class="eyebrow">Heroes of Might and Magic III Personality Test</p>
+          <h1>你是《英雄无敌3》里的哪位抽象英雄</h1>
+          <p class="lede">
+            38 题大题库，每次随机抽 12 题。结果池锁定 19 位英雄，题目会混入死亡阴影、深渊号角和社区老梗：
+            窝囊废、火爹、四大天王、跑图怪、阴间法师，一个都别想跑。
+          </p>
+          <div class="stats-row">
+            <div>
+              <strong>19</strong>
+              <span>位结果英雄</span>
+            </div>
+            <div>
+              <strong>38</strong>
+              <span>道总题库</span>
+            </div>
+            <div>
+              <strong>12</strong>
+              <span>道单次测试</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-panel">
+          <div class="hero-card accent-card">
+            <p>均衡机制</p>
+            <h2>19 位英雄在总题库中各被映射 8 次</h2>
+            <span>权重完全等量，主打一个人人都有出头日。</span>
+          </div>
+          <button id="startButton" class="start-button">开始测，我今天到底有多抽象</button>
+        </div>
+      </header>
+
+      <main class="content-grid">
+        <section id="introPanel" class="panel intro-panel">
+          <div class="panel-head">
+            <span>玩法说明</span>
+            <strong>测出来的不只是英雄，还有你打图时的灵魂操作</strong>
+          </div>
+          <div class="feature-grid">
+            <article>
+              <h3>题目风格</h3>
+              <p>像类 MBTI，但不装正经。所有题目都写成英三玩家听得懂的野路子场景。</p>
+            </article>
+            <article>
+              <h3>结果逻辑</h3>
+              <p>前台看起来像整活，后台其实做了等权映射和人格倾向修正，尽量避免全员都测成同一个人。</p>
+            </article>
+            <article>
+              <h3>音乐结尾</h3>
+              <p>结果页会自动尝试播放对应氛围 BGM，塔楼、电元素、地狱、壁垒、沼泽、海港、据点都有牌面。</p>
+            </article>
+            <article>
+              <h3>结语金句</h3>
+              <p>最后送你一句《新三国》经典语录，让测试结果更像一封命运判词。</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="quizPanel" class="panel quiz-panel hidden">
+          <div class="progress-wrap">
+            <div class="progress-copy">
+              <span id="questionTag">第 1 题</span>
+              <strong id="questionCategory">开局精神状态</strong>
+            </div>
+            <div class="progress-bar">
+              <div id="progressFill"></div>
+            </div>
+          </div>
+          <h2 id="questionTitle" class="question-title"></h2>
+          <div id="optionsContainer" class="options-grid"></div>
+        </section>
+
+        <section id="resultPanel" class="panel result-panel hidden">
+          <div class="result-topline">
+            <span id="resultMood">结果人格</span>
+            <button id="restartButton" class="ghost-button">再测一次</button>
+          </div>
+          <div class="result-layout">
+            <div class="result-portrait">
+              <img id="heroImage" alt="测试结果英雄立绘" />
+            </div>
+            <div class="result-copy">
+              <p id="heroFaction" class="faction-line"></p>
+              <h2 id="heroName"></h2>
+              <p id="heroTitle" class="result-title"></p>
+              <p id="heroSummary" class="result-summary"></p>
+              <div id="heroTags" class="tag-row"></div>
+              <div class="result-notes">
+                <article>
+                  <span>你的打图表现</span>
+                  <p id="heroBattleStyle"></p>
+                </article>
+                <article>
+                  <span>朋友对你的评价</span>
+                  <p id="heroFriendView"></p>
+                </article>
+                <article>
+                  <span>一旦上头会怎样</span>
+                  <p id="heroMeltdown"></p>
+                </article>
+              </div>
+              <div class="music-box">
+                <div>
+                  <span>本局 BGM</span>
+                  <strong id="musicLabel"></strong>
+                </div>
+                <div class="music-actions">
+                  <button id="musicToggle" class="ghost-button">播放音乐</button>
+                </div>
+              </div>
+              <blockquote id="heroQuote" class="quote-box"></blockquote>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <audio id="resultAudio" preload="auto"></audio>
+    <script src="./data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+  </html>
