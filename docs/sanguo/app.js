@@ -1,10 +1,13 @@
 (() => {
-  const QUESTION_COUNT = 16;
+  const MIN_QUESTION_COUNT = 10;
+  const MAX_QUESTION_COUNT = 18;
   const data = window.SANGUO_QUIZ_DATA;
   const characterById = Object.fromEntries(data.characters.map((item) => [item.id, item]));
   const characterIds = data.characters.map((item) => item.id);
+  const TOTAL_SLOTS = data.questions.length * 4;
 
   const state = {
+    selectedQuestions: [],
     currentIndex: 0,
     answers: [],
     audioPlaying: false,
@@ -41,9 +44,44 @@
   const heroQuote = document.getElementById("heroQuote");
 
   const SITE_URL = "https://yaokx520.github.io/HOMM3/docs/sanguo/";
+  const fullQuestionSet = attachCharacterAssignments(data.questions);
+
+  function shuffle(list) {
+    const copy = [...list];
+    for (let i = copy.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  function generateAssignmentSequence() {
+    const rounds = [];
+    const roundsCount = TOTAL_SLOTS / characterIds.length;
+    for (let round = 0; round < roundsCount; round += 1) {
+      const shift = (round * 5) % characterIds.length;
+      const rotated = characterIds.slice(shift).concat(characterIds.slice(0, shift));
+      rounds.push(round % 2 === 0 ? rotated : [...rotated].reverse());
+    }
+    return rounds.flat();
+  }
+
+  function attachCharacterAssignments(questions) {
+    const assignments = generateAssignmentSequence();
+    return questions.map((question, questionIndex) => ({
+      ...question,
+      options: question.options.map((option, optionIndex) => ({
+        ...option,
+        characterId: assignments[questionIndex * 4 + optionIndex],
+      })),
+    }));
+  }
 
   function buildQuiz() {
     clearSharedResultUrl();
+    const targetCount =
+      MIN_QUESTION_COUNT + Math.floor(Math.random() * (MAX_QUESTION_COUNT - MIN_QUESTION_COUNT + 1));
+    state.selectedQuestions = shuffle(fullQuestionSet).slice(0, targetCount);
     state.currentIndex = 0;
     state.answers = [];
     pauseAudio();
@@ -54,9 +92,9 @@
   }
 
   function renderQuestion() {
-    const question = data.questions[state.currentIndex];
-    const progress = ((state.currentIndex + 1) / QUESTION_COUNT) * 100;
-    questionTag.textContent = `第 ${state.currentIndex + 1} 题 / 共 ${QUESTION_COUNT} 题`;
+    const question = state.selectedQuestions[state.currentIndex];
+    const progress = ((state.currentIndex + 1) / state.selectedQuestions.length) * 100;
+    questionTag.textContent = `第 ${state.currentIndex + 1} 题 / 共 ${state.selectedQuestions.length} 题`;
     questionCategory.textContent = question.category;
     questionTitle.textContent = question.title;
     progressFill.style.width = `${progress}%`;
@@ -74,7 +112,7 @@
   function handleAnswer(option) {
     state.answers.push(option);
     state.currentIndex += 1;
-    if (state.currentIndex >= QUESTION_COUNT) {
+    if (state.currentIndex >= state.selectedQuestions.length) {
       showResult();
       return;
     }
@@ -82,11 +120,14 @@
   }
 
   function computeResult() {
+    const directScores = Object.fromEntries(characterIds.map((id) => [id, 0]));
     const axisTotals = { power: 0, loyalty: 0, rage: 0, grace: 0, guile: 0, theater: 0 };
     state.answers.forEach((answer) => {
+      directScores[answer.characterId] += 6;
       Object.entries(answer.axes).forEach(([axis, value]) => {
         axisTotals[axis] += value;
       });
+      directScores[characterIds[(characterIds.indexOf(answer.characterId) + 3) % characterIds.length]] += 0.3;
     });
 
     const scored = data.characters.map((character) => {
@@ -97,7 +138,7 @@
       const tieBreakerSource = `${character.id}-${state.answers.map((answer) => answer.label).join("|")}`;
       const tieBreaker =
         [...tieBreakerSource].reduce((sum, char) => sum + char.charCodeAt(0), 0) % 29;
-      return { character, score: affinity * 10 + tieBreaker };
+      return { character, score: directScores[character.id] * 100 + affinity * 2 + tieBreaker };
     });
 
     scored.sort((a, b) => b.score - a.score);

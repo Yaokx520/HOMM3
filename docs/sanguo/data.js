@@ -505,6 +505,126 @@ window.SANGUO_QUIZ_DATA = (() => {
         { label: "活得像一段戏", detail: "没点名场面多没劲。", axes: { theater: 3 } },
       ],
     },
+    {
+      category: "用人之道",
+      title: "你更愿意把关键位置交给哪种人？",
+      options: [
+        { label: "最能打的", detail: "先解决眼前问题。", axes: { power: 2, rage: 1 } },
+        { label: "最忠心的", detail: "至少不会背刺。", axes: { loyalty: 3 } },
+        { label: "最会算的", detail: "脑子清楚最重要。", axes: { guile: 3 } },
+        { label: "最能镇场的", detail: "牌面会影响一切。", axes: { grace: 2, theater: 1 } },
+      ],
+    },
+    {
+      category: "酒局气氛",
+      title: "如果你在鸿门宴或军中大宴上，你通常会？",
+      options: [
+        { label: "盯着主位", detail: "谁在控场我先看明白。", axes: { power: 2, guile: 1 } },
+        { label: "先敬有恩之人", detail: "情分不能乱。", axes: { loyalty: 2, grace: 1 } },
+        { label: "边喝边想后招", detail: "局从来不只在酒里。", axes: { guile: 2, theater: 1 } },
+        { label: "把气氛炒热", detail: "场子冷了最丢人。", axes: { theater: 3 } },
+      ],
+    },
+    {
+      category: "托孤压力",
+      title: "如果有人把烂摊子和重任一起塞给你，你会？",
+      options: [
+        { label: "先接住再说", detail: "不能让场面塌。", axes: { loyalty: 2, power: 1 } },
+        { label: "先问凭什么", detail: "责任得配权力。", axes: { power: 2, guile: 1 } },
+        { label: "先列计划", detail: "不然大家一起死。", axes: { guile: 3 } },
+        { label: "先把话讲满", detail: "至少姿态要撑住。", axes: { theater: 2, grace: 1 } },
+      ],
+    },
+    {
+      category: "骄兵败相",
+      title: "你最看不起哪种“快输还不自知”的状态？",
+      options: [
+        { label: "手里有点权就飘", detail: "这类人最容易摔死。", axes: { power: 2, rage: 1 } },
+        { label: "嘴上全是忠义", detail: "结果谁都靠不住。", axes: { loyalty: 2, rage: 1 } },
+        { label: "脑子完全停摆", detail: "兵法白学。", axes: { guile: 3 } },
+        { label: "只剩空排场", detail: "看着体面，实则空心。", axes: { grace: 2, theater: 1 } },
+      ],
+    },
+    {
+      category: "挨骂反应",
+      title: "被当众怼了之后，你更像哪种反应？",
+      options: [
+        { label: "当场顶回去", detail: "气势不能丢。", axes: { rage: 2, power: 1 } },
+        { label: "记在心里", detail: "这笔账以后算。", axes: { guile: 3 } },
+        { label: "先看谁站我这边", detail: "不能只顾自己脸。", axes: { loyalty: 2, grace: 1 } },
+        { label: "嘴上不输，场面也不输", detail: "不能让别人看笑话。", axes: { theater: 2, grace: 1 } },
+      ],
+    },
+    {
+      category: "理想结局",
+      title: "你更想要哪种人生结尾？",
+      options: [
+        { label: "江山在手", detail: "成王败寇，别的再说。", axes: { power: 3 } },
+        { label: "后人念我忠义", detail: "值了。", axes: { loyalty: 3 } },
+        { label: "我早就算到了", detail: "死也得死得明白。", axes: { guile: 3 } },
+        { label: "留下一段名场面", detail: "至少让人记住。", axes: { theater: 3 } },
+      ],
+    },
+    {
+      category: "文武偏向",
+      title: "你更看重哪一种本事？",
+      options: [
+        { label: "压得住局", detail: "没人敢乱来才是真本事。", axes: { power: 2, grace: 1 } },
+        { label: "聚得起人", detail: "一个人再强也白搭。", axes: { loyalty: 3 } },
+        { label: "谋得够深", detail: "深一点，就能少死很多人。", axes: { guile: 3 } },
+        { label: "演得够稳", detail: "局势和气氛都要拿下。", axes: { theater: 2, grace: 1 } },
+      ],
+    },
+    {
+      category: "夜半独思",
+      title: "深夜一个人复盘时，你最容易卡在哪？",
+      options: [
+        { label: "是不是还不够狠", detail: "也许我该更早动手。", axes: { power: 2, rage: 1 } },
+        { label: "是不是对不起谁", detail: "人心账最难算。", axes: { loyalty: 3 } },
+        { label: "是不是算漏一步", detail: "这种最折磨人。", axes: { guile: 3 } },
+        { label: "是不是丢了体面", detail: "那会让我睡不着。", axes: { grace: 2, theater: 1 } },
+      ],
+    },
+    {
+      category: "阵前风格",
+      title: "临阵之前，你最能给队伍带来的是什么？",
+      options: [
+        { label: "压迫感", detail: "让人先怕三分。", axes: { power: 2, theater: 1 } },
+        { label: "主心骨", detail: "大家知道你不会跑。", axes: { loyalty: 2, grace: 1 } },
+        { label: "清晰判断", detail: "知道该先做什么。", axes: { guile: 3 } },
+        { label: "士气和戏剧性", detail: "一句话就能把火点着。", axes: { theater: 2, rage: 1 } },
+      ],
+    },
+    {
+      category: "关系处理",
+      title: "你更擅长处理哪一种关系？",
+      options: [
+        { label: "上下级", detail: "规矩得先立住。", axes: { power: 2, grace: 1 } },
+        { label: "兄弟同盟", detail: "情分才是底盘。", axes: { loyalty: 3 } },
+        { label: "对手博弈", detail: "这才是最好玩的。", axes: { guile: 3 } },
+        { label: "公共场合", detail: "人多的地方我更会说。", axes: { theater: 3 } },
+      ],
+    },
+    {
+      category: "临门一脚",
+      title: "你最常在哪一步决定胜负？",
+      options: [
+        { label: "抢先定调", detail: "先压住再说。", axes: { power: 2, theater: 1 } },
+        { label: "关键拉人", detail: "人一到位，事就活了。", axes: { loyalty: 3 } },
+        { label: "最后一算", detail: "细节才是命。", axes: { guile: 3 } },
+        { label: "最后一嗓子", detail: "关键时刻要有人点燃全场。", axes: { theater: 2, rage: 1 } },
+      ],
+    },
+    {
+      category: "你怕什么",
+      title: "你真正害怕的是什么？",
+      options: [
+        { label: "手里没权", detail: "那就只能看别人表演。", axes: { power: 3 } },
+        { label: "身边无人", detail: "孤零零最难。", axes: { loyalty: 3 } },
+        { label: "脑子不清", detail: "这比输更可怕。", axes: { guile: 3 } },
+        { label: "无名无份", detail: "做完一切却没人记得。", axes: { theater: 2, grace: 1 } },
+      ],
+    },
   ];
 
   return { characters, questions, quotePool, musicThemes };
