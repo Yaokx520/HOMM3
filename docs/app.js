@@ -1,6 +1,7 @@
 (() => {
   const BASE_QUESTION_COUNT = 12;
   const MAX_QUESTION_COUNT = 20;
+  const BRANCH_BASE_COUNT = 4;
   const data = window.QUIZ_DATA;
   const heroById = Object.fromEntries(data.heroes.map((hero) => [hero.id, hero]));
   const heroIds = data.heroes.map((hero) => hero.id);
@@ -54,6 +55,7 @@
       "来人，换大盏。",
       "你恨不得劈自己一刀啊。",
       "龙可是帝王之征啊，恭喜爹可以撑地了。",
+      "我二弟天下无敌。",
       "我从未见过有如此厚颜无耻之人。",
       "大丈夫生于天地间，岂能郁郁久居人下。",
       "俺也一样。",
@@ -71,6 +73,7 @@
       shadow: [
         "{name}这人还是个忠厚人呀，只不过忠厚得有点阴间。",
         "来人，换大盏，今晚得听{name}讲一宿黑暗兵法。",
+        "没了耿健将，我要这地下城又有何用啊。",
       ],
       war: [
         "我二弟天下无敌，而{name}负责把这个无敌落到实处。",
@@ -117,6 +120,7 @@
       ],
       H093: [
         "你让牛将军带五百迎敌，岂不是有去无回啊。",
+        "没了耿健将，我要这地下城又有何用啊。",
       ],
     },
   };
@@ -161,10 +165,21 @@
   }
 
   const fullQuestionSet = attachHeroAssignments(data.questions);
+  const branchQuestionSet = fullQuestionSet.filter((question) =>
+    question.options.some((option) => Array.isArray(option.followUps) && option.followUps.length)
+  );
+  const plainQuestionSet = fullQuestionSet.filter((question) => !branchQuestionSet.includes(question));
 
   function buildQuiz() {
     clearSharedResultUrl();
-    state.selectedQuestions = shuffle(fullQuestionSet).slice(0, BASE_QUESTION_COUNT);
+    const guaranteedBranch = shuffle(branchQuestionSet).slice(
+      0,
+      Math.min(BRANCH_BASE_COUNT, branchQuestionSet.length)
+    );
+    const remainingPool = shuffle(
+      fullQuestionSet.filter((question) => !guaranteedBranch.includes(question))
+    ).slice(0, BASE_QUESTION_COUNT - guaranteedBranch.length);
+    state.selectedQuestions = shuffle([...guaranteedBranch, ...remainingPool]);
     state.currentIndex = 0;
     state.answers = [];
     state.injectedFollowUps = new Set();
