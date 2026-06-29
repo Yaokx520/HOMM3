@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>你是《新三国》里的哪位人物</title>
+    <meta
+      name="description"
+      content="16位《新三国》人物，20条结语，一页测出你更像谁。"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero-banner">
+        <div class="hero-copy">
+          <p class="eyebrow">New Three Kingdoms Personality Test</p>
+          <h1>你是《新三国》里的哪位人物</h1>
+          <p class="lede">
+            16 位人物结果池，题目专盯权谋、上头、体面、嘴硬、仁义和抽象气质。你测出来的，
+            可能是能整顿百官的人，也可能是能一句话把全场点燃的人。
+          </p>
+          <div class="stats-row">
+            <div>
+              <strong>16</strong>
+              <span>位结果人物</span>
+            </div>
+            <div>
+              <strong>16</strong>
+              <span>道固定题目</span>
+            </div>
+            <div>
+              <strong>20</strong>
+              <span>条结语判词</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-panel">
+          <div class="hero-card accent-card">
+            <p>测试气质</p>
+            <h2>正经结构，抽象判词，结果要像一段能单发群聊的三国判决书</h2>
+            <span>页面支持音乐、直达分享和结果链接复用。</span>
+          </div>
+          <button id="startButton" class="start-button">开始测，我到底是哪路诸侯</button>
+        </div>
+      </header>
+
+      <main class="content-grid">
+        <section id="introPanel" class="panel intro-panel">
+          <div class="panel-head">
+            <span>玩法说明</span>
+            <strong>这不是历史考试，这是权谋气味检测器</strong>
+          </div>
+          <div class="feature-grid">
+            <article>
+              <h3>人物池</h3>
+              <p>曹操、刘备、关羽、诸葛亮、司马懿、周瑜、吕布、董卓这些熟脸都会出现。</p>
+            </article>
+            <article>
+              <h3>判词风格</h3>
+              <p>既有《新三国》那种带戏味的长句，也有适合一眼截图发群的狠话短句。</p>
+            </article>
+            <article>
+              <h3>氛围音乐</h3>
+              <p>结果页会按人物气质切入《关羽之歌》《小乔之歌》《刘备之死》三组 BGM。</p>
+            </article>
+            <article>
+              <h3>一键分享</h3>
+              <p>结果支持直达链接，别人点开就能直接看到同一位人物，不用重做题。</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="quizPanel" class="panel quiz-panel hidden">
+          <div class="progress-wrap">
+            <div class="progress-copy">
+              <span id="questionTag">第 1 题 / 共 16 题</span>
+              <strong id="questionCategory">朝堂气味</strong>
+            </div>
+            <div class="progress-bar">
+              <div id="progressFill"></div>
+            </div>
+          </div>
+          <h2 id="questionTitle" class="question-title"></h2>
+          <div id="optionsContainer" class="options-grid"></div>
+        </section>
+
+        <section id="resultPanel" class="panel result-panel hidden">
+          <div class="result-topline">
+            <span id="resultMood">结果人物</span>
+            <button id="restartButton" class="ghost-button">再测一次</button>
+          </div>
+          <div class="result-layout">
+            <div class="result-portrait">
+              <img id="heroImage" alt="测试结果人物头像" />
+            </div>
+            <div class="result-copy">
+              <p id="heroFaction" class="faction-line"></p>
+              <h2 id="heroName"></h2>
+              <p id="heroTitle" class="result-title"></p>
+              <p id="heroSummary" class="result-summary"></p>
+              <div id="heroTags" class="tag-row"></div>
+              <div class="result-notes">
+                <article>
+                  <span>你的处事风格</span>
+                  <p id="heroBattleStyle"></p>
+                </article>
+                <article>
+                  <span>旁人对你的看法</span>
+                  <p id="heroFriendView"></p>
+                </article>
+                <article>
+                  <span>你最容易在哪翻车</span>
+                  <p id="heroMeltdown"></p>
+                </article>
+              </div>
+              <div class="music-box">
+                <div>
+                  <span>本局 BGM</span>
+                  <strong id="musicLabel"></strong>
+                </div>
+                <div class="music-actions">
+                  <button id="musicToggle" class="ghost-button">播放音乐</button>
+                </div>
+              </div>
+              <div class="share-box">
+                <div>
+                  <span>一键分享</span>
+                  <strong id="shareTitle">把这份判词甩给同好</strong>
+                  <p id="shareHint" class="share-hint">链接会直达当前人物结果页。</p>
+                </div>
+                <div class="share-actions">
+                  <button id="nativeShareButton" class="ghost-button">系统分享</button>
+                  <button id="copyShareButton" class="ghost-button">复制链接</button>
+                </div>
+              </div>
+              <blockquote id="heroQuote" class="quote-box"></blockquote>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <audio id="resultAudio" preload="auto"></audio>
+    <script src="./data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+  </html>
