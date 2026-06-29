@@ -102,6 +102,27 @@ window.QUIZ_DATA = (() => {
       axisProfile: { rush: 1, econ: 2, control: 3, chaos: 0, honor: 3, weird: 0 },
     },
     {
+      id: "H032",
+      code: "H032",
+      name: "匹克杰姆",
+      english: "Piquedram",
+      faction: "塔楼 Tower",
+      title: "塔楼上将军兼魔法塔气氛总管",
+      image: "./assets/heroes/H032.png",
+      tags: ["塔楼老炮", "稳中带狂", "嘴硬牌面大"],
+      summary:
+        "你很像那种平时端着、关键时刻却会突然把场子接管的人。你既要牌面，也要赢法，最好还能顺手留下两句能传半个月的狠话。",
+      battleStyle:
+        "你的打法不算最花，但很会在该亮相的时候站出来。你懂塔楼那种先端着再发力的劲，一旦节奏进到你手里，局面会显得特别有秩序。",
+      friendView:
+        "朋友会觉得你有种古典名将味，平时像在忍，真到要你发话的时候，往往一开口就是整局的中心。",
+      meltdown:
+        "如果你最想立威的那一仗没打明白，你会进入一种表面淡定、内心已经开始自砍三刀的崩溃状态。",
+      music: "storm",
+      quote: quotePool.ascent,
+      axisProfile: { rush: 1, econ: 2, control: 3, chaos: 1, honor: 2, weird: 2 },
+    },
+    {
       id: "H035",
       code: "H035",
       name: "妮拉",

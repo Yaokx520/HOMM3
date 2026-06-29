@@ -52,6 +52,8 @@
       "叉出去。",
       "接着奏乐，接着舞。",
       "来人，换大盏。",
+      "你恨不得劈自己一刀啊。",
+      "龙可是帝王之征啊，恭喜爹可以撑地了。",
       "我从未见过有如此厚颜无耻之人。",
       "大丈夫生于天地间，岂能郁郁久居人下。",
       "俺也一样。",
@@ -111,6 +113,10 @@
       ],
       H032: [
         "我乃塔楼上将军，匹克杰姆是也。",
+        "我乃塔楼上将匹克杰姆，可温酒斩暴龙。",
+      ],
+      H093: [
+        "你让牛将军带五百迎敌，岂不是有去无回啊。",
       ],
     },
   };
@@ -125,13 +131,22 @@
   }
 
   function generateAssignmentSequence() {
+    const totalSlots = fullQuestionSlots();
     const rounds = [];
-    for (let round = 0; round < 8; round += 1) {
+    const fullRounds = Math.floor(totalSlots / heroIds.length);
+    const remainder = totalSlots % heroIds.length;
+    for (let round = 0; round < fullRounds; round += 1) {
       const shift = (round * 5) % heroIds.length;
       const rotated = heroIds.slice(shift).concat(heroIds.slice(0, shift));
       rounds.push(round % 2 === 0 ? rotated : [...rotated].reverse());
     }
-    return rounds.flat();
+    const tailShift = (fullRounds * 3) % heroIds.length;
+    const tail = heroIds.slice(tailShift).concat(heroIds.slice(0, tailShift)).slice(0, remainder);
+    return rounds.flat().concat(tail);
+  }
+
+  function fullQuestionSlots() {
+    return data.questions.length * 4;
   }
 
   function attachHeroAssignments(questions) {
