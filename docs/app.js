@@ -22,6 +22,8 @@
   const progressFill = document.getElementById("progressFill");
   const restartButton = document.getElementById("restartButton");
   const musicToggle = document.getElementById("musicToggle");
+  const nativeShareButton = document.getElementById("nativeShareButton");
+  const copyShareButton = document.getElementById("copyShareButton");
   const audio = document.getElementById("resultAudio");
 
   const resultMood = document.getElementById("resultMood");
@@ -36,6 +38,10 @@
   const heroMeltdown = document.getElementById("heroMeltdown");
   const musicLabel = document.getElementById("musicLabel");
   const heroQuote = document.getElementById("heroQuote");
+  const shareTitle = document.getElementById("shareTitle");
+  const shareHint = document.getElementById("shareHint");
+
+  const SITE_URL = "https://yaokx520.github.io/HOMM3/";
 
   function shuffle(list) {
     const copy = [...list];
@@ -70,6 +76,7 @@
   const fullQuestionSet = attachHeroAssignments(data.questions);
 
   function buildQuiz() {
+    clearSharedResultUrl();
     state.selectedQuestions = shuffle(fullQuestionSet).slice(0, QUESTION_COUNT);
     state.currentIndex = 0;
     state.answers = [];
@@ -183,8 +190,11 @@
     heroMeltdown.textContent = hero.meltdown;
     musicLabel.textContent = music.name;
     heroQuote.textContent = `总结金句：${hero.quote}`;
+    shareTitle.textContent = `分享你的 ${hero.name} 结果`;
+    shareHint.textContent = "链接会直达当前英雄结果页，朋友点开就能看到同款判词。";
     heroTags.innerHTML = hero.tags.map((tag) => `<span>${tag}</span>`).join("");
     audio.src = music.file;
+    updateSharedResultUrl(hero.id);
     tryPlayAudio();
   }
 
@@ -204,11 +214,85 @@
     tryPlayAudio();
   }
 
+  function buildShareUrl(heroId) {
+    const current = window.location.href.startsWith("file:")
+      ? SITE_URL
+      : `${window.location.origin}${window.location.pathname}`;
+    const url = new URL(current);
+    url.searchParams.set("hero", heroId);
+    return url.toString();
+  }
+
+  function updateSharedResultUrl(heroId) {
+    const url = new URL(window.location.href);
+    url.searchParams.set("hero", heroId);
+    window.history.replaceState({}, "", url.toString());
+  }
+
+  function clearSharedResultUrl() {
+    const url = new URL(window.location.href);
+    url.searchParams.delete("hero");
+    window.history.replaceState({}, "", url.toString());
+  }
+
+  function renderSharedHero(hero) {
+    introPanel.classList.add("hidden");
+    quizPanel.classList.add("hidden");
+    resultPanel.classList.remove("hidden");
+    renderResult({ winner: hero });
+  }
+
+  async function shareCurrentResult() {
+    const heroId = new URL(window.location.href).searchParams.get("hero");
+    if (!heroId || !heroById[heroId]) return;
+    const hero = heroById[heroId];
+    const url = buildShareUrl(heroId);
+    const payload = {
+      title: `${hero.name} | 英雄无敌3趣味人格测试`,
+      text: `我测出来是 ${hero.name}：${hero.title}`,
+      url,
+    };
+    if (navigator.share) {
+      try {
+        await navigator.share(payload);
+        nativeShareButton.textContent = "已调起分享";
+        return;
+      } catch (error) {
+        nativeShareButton.textContent = "系统分享";
+      }
+    }
+    await copyCurrentResultLink();
+  }
+
+  async function copyCurrentResultLink() {
+    const heroId = new URL(window.location.href).searchParams.get("hero");
+    if (!heroId || !heroById[heroId]) return;
+    const hero = heroById[heroId];
+    const url = buildShareUrl(heroId);
+    try {
+      await navigator.clipboard.writeText(url);
+      copyShareButton.textContent = "链接已复制";
+      shareHint.textContent = `已复制 ${hero.name} 的分享链接，直接发群就行。`;
+    } catch (error) {
+      shareHint.textContent = `复制失败了，但你仍可以手动分享：${url}`;
+    }
+  }
+
+  function initFromUrl() {
+    const heroId = new URL(window.location.href).searchParams.get("hero");
+    if (!heroId || !heroById[heroId]) return;
+    renderSharedHero(heroById[heroId]);
+  }
+
   startButton.addEventListener("click", buildQuiz);
   restartButton.addEventListener("click", buildQuiz);
   musicToggle.addEventListener("click", toggleAudio);
+  nativeShareButton.addEventListener("click", shareCurrentResult);
+  copyShareButton.addEventListener("click", copyCurrentResultLink);
   audio.addEventListener("ended", () => {
     state.audioPlaying = false;
     musicToggle.textContent = "重新播放";
   });
+
+  initFromUrl();
 })();
